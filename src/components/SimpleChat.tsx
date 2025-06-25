@@ -260,12 +260,17 @@ const SimpleChat: React.FC<SimpleChatProps> = memo(({ lang }) => {
 
 			{/* Sidebar */}
 			<div
-				className={`fixed right-0 top-0 h-screen w-full md:w-[600px] lg:w-[700px] bg-gray-900 border-l border-gray-800 z-50 transform transition-all duration-700 ease-in-out chat-container ${
+				className={`fixed right-0 top-0 w-full md:w-[600px] lg:w-[700px] bg-gray-900 border-l border-gray-800 z-50 transform transition-all duration-700 ease-in-out chat-container ios-safe-height ${
 					isChatOpen
 						? 'translate-x-0 opacity-100'
 						: 'translate-x-full opacity-0'
 				}`}
 				onClick={e => handleChatAreaClick(e.nativeEvent)}
+				style={{
+					height: isIOS ? '-webkit-fill-available' : '100vh',
+					paddingTop: isIOS ? 'env(safe-area-inset-top)' : '0',
+					paddingBottom: isIOS ? 'env(safe-area-inset-bottom)' : '0',
+				}}
 			>
 				{/* Decorative circles - только на десктопе */}
 				<div className='absolute inset-0 overflow-hidden pointer-events-none hidden md:block'>
@@ -355,7 +360,12 @@ const SimpleChat: React.FC<SimpleChatProps> = memo(({ lang }) => {
 				</div>
 
 				{/* Chat Content */}
-				<div className='h-screen flex flex-col relative z-10'>
+				<div
+					className='flex flex-col relative z-10 ios-safe-height'
+					style={{
+						height: isIOS ? '-webkit-fill-available' : '100vh',
+					}}
+				>
 					{/* Connection status banner */}
 					{(connectionState.status === 'disconnected' ||
 						connectionState.status === 'error' ||
@@ -458,7 +468,14 @@ const SimpleChat: React.FC<SimpleChatProps> = memo(({ lang }) => {
 					</div>
 
 					{/* Enhanced Input Section - Always visible and active */}
-					<div className='p-2 md:p-4 border-t border-gray-800 bg-gray-900 relative chat-input-container flex-shrink-0'>
+					<div
+						className='p-2 md:p-4 border-t border-gray-800 bg-gray-900 relative chat-input-container flex-shrink-0'
+						style={{
+							paddingBottom: isIOS
+								? 'calc(0.5rem + env(safe-area-inset-bottom))'
+								: undefined,
+						}}
+					>
 						{error && (
 							<div className='mb-2 p-2 bg-red-500/20 border border-red-500/30 rounded text-red-200 text-sm flex items-start justify-between'>
 								<div className='flex-1'>
@@ -545,8 +562,8 @@ const SimpleChat: React.FC<SimpleChatProps> = memo(({ lang }) => {
 							</Button>
 						</div>
 
-						{/* Mobile keyboard spacer */}
-						<div className='h-safe-area-inset-bottom md:hidden chat-input-safe-area'></div>
+						{/* Mobile keyboard spacer - iOS safe area handled by CSS */}
+						{isIOS && <div className='chat-input-safe-area md:hidden'></div>}
 					</div>
 				</div>
 			</div>

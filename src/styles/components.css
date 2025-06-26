@@ -268,7 +268,7 @@ button, .btn {
     /* Allow clicks to pass through to focus input */
     min-height: 0px;
     /* Add bottom padding to prevent overlap with input */
-    padding-bottom: 150px;
+    /* padding-bottom: 150px; */
   }
 
   /* Chat container mobile fixes */

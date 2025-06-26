@@ -363,7 +363,7 @@ const SimpleChat: React.FC<SimpleChatProps> = memo(({ lang }) => {
 				<div
 					className='flex flex-col relative z-10 ios-safe-height'
 					style={{
-						height: isIOS ? '-webkit-fill-available' : '100vh',
+						height: isIOS ? '-webkit-fill-available' : 'calc(100vh - 100px)',
 					}}
 				>
 					{/* Connection status banner */}

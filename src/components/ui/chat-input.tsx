@@ -23,6 +23,19 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, ChatInputProps>(
 			}
 		}, [autoFocus, textareaRef])
 
+		// Reset height when value is empty
+		React.useEffect(() => {
+			if (
+				textareaRef &&
+				'current' in textareaRef &&
+				textareaRef.current &&
+				(!props.value || props.value === '')
+			) {
+				textareaRef.current.style.height = 'auto'
+				textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+			}
+		}, [props.value, textareaRef])
+
 		const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 			if (e.key === 'Enter' && !e.shiftKey) {
 				e.preventDefault()

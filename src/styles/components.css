@@ -185,7 +185,9 @@ button, .btn {
   max-width: 100vw;
   position: relative;
 }
-
+.chat-message-list{
+  padding-bottom: 30px;
+}
 /* Mobile-specific section fixes */
 @media (max-width: 768px) {
   .hero-section,
@@ -268,7 +270,7 @@ button, .btn {
     /* Allow clicks to pass through to focus input */
     min-height: 0px;
     /* Add bottom padding to prevent overlap with input */
-    padding-bottom: 25px;
+    padding-bottom: 50px;
   }
 
   /* Chat container mobile fixes */

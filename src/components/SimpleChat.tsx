@@ -76,6 +76,29 @@ const SimpleChat: React.FC<SimpleChatProps> = memo(({ lang }) => {
 		}
 	}, [isLoading, messages.length])
 
+	// Block body and html scroll when chat is open
+	useEffect(() => {
+		if (isChatOpen) {
+			// Store original overflow styles
+			const originalBodyOverflow = document.body.style.overflow
+			const originalHtmlOverflow = document.documentElement.style.overflow
+
+			// Block scroll on both body and html
+			document.body.style.overflow = 'hidden'
+			document.documentElement.style.overflow = 'hidden'
+
+			// Add class to html for additional control
+			document.documentElement.classList.add('chat-open-no-scroll')
+
+			// Cleanup function to restore original overflow
+			return () => {
+				document.body.style.overflow = originalBodyOverflow
+				document.documentElement.style.overflow = originalHtmlOverflow
+				document.documentElement.classList.remove('chat-open-no-scroll')
+			}
+		}
+	}, [isChatOpen])
+
 	// Enhanced mobile chat input handling
 	const {
 		focusInput,
@@ -525,10 +548,16 @@ const SimpleChat: React.FC<SimpleChatProps> = memo(({ lang }) => {
 
 								{/* Loading indicator overlay */}
 								{isLoading && (
-									<div className='absolute inset-0 bg-gray-800/50 flex items-center justify-center rounded-lg pointer-events-none'>
+									<div
+										className={`absolute ${
+											isMobile
+												? 'inset-y-0 right-2 flex items-center'
+												: 'inset-0 bg-gray-800/50 flex items-center justify-center'
+										} rounded-lg pointer-events-none`}
+									>
 										<div className='flex items-center gap-2 text-gray-400 text-sm'>
 											<div className='w-4 h-4 border-2 border-connexi-orange border-t-transparent rounded-full animate-spin'></div>
-											Відправка...
+											{!isMobile && 'Надсилання...'}
 										</div>
 									</div>
 								)}
